@@ -35,4 +35,8 @@ export class Type {
   async isDuplicate(f1: RFile, f2: RFile) {
     return basename(f1.path) === basename(f2.path);
   }
+
+  async merge(f1: RFile, f2: RFile) {
+    return;
+  }
 }
