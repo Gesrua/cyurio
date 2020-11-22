@@ -19,12 +19,16 @@ export class ExtensionService {
     this.fallbackType = new Type(databaseService);
   }
 
-  async getType(f: RFile) {
+  async getFileType(f: RFile) {
     for(const type of this.types) {
       if (await type.isValid(f)) {
         return type;
       }
     }
     return this.fallbackType;
+  }
+
+  getType(type: string): Type{
+    return this.types[type];
   }
 }
