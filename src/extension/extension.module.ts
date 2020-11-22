@@ -10,13 +10,16 @@ import { Type } from './type/type';
   providers: [ExtensionService]
 })
 export class ExtensionModule {
-  readonly types: Type[];
+  readonly types;
   readonly fallbackType: Type;
   readonly props;
   readonly fallbackProps: Type;
 
   constructor(private readonly databaseService: DatabaseService) {
-    this.types.push(new Text(databaseService));
+    const types = [new Text(databaseService)];
+    for(const type of types) {
+      this.types[type.type] = type;
+    }
   }
 
   async getType(f: RFile) {
