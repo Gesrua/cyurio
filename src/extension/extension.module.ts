@@ -4,6 +4,7 @@ import { ExtensionService } from './extension.service';
 
 @Module({
   imports: [DatabaseService],
-  providers: [ExtensionService]
+  providers: [ExtensionService],
+  exports: [ExtensionService]
 })
 export class ExtensionModule {}
