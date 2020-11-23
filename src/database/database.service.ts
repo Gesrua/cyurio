@@ -7,6 +7,9 @@ export class DatabaseService {
   constructor() {
     this.db = Datastore.create('./store.db')
   }
+  async get(id: string) {
+    return this.db.findOne({'_id': id});
+  }
   async insert(obj) {
     return this.db.insert(obj);
   }
