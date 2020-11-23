@@ -23,7 +23,7 @@ export class Text extends Type {
   }
 
   async create(f: RFile) {
-    f.title = basename(f.path);
+    f.title = basename(f.path, '.txt');
   }
 
   async isDuplicate(f1: RFile, f2: RFile) {
