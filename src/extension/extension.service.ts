@@ -12,11 +12,11 @@ export class ExtensionService {
   readonly fallbackProps: Type;
 
   constructor(private readonly databaseService: DatabaseService) {
-    const types = [new Text(databaseService)];
+    const types = [new Text(this)];
     for(const type of types) {
       this.types[type.type] = type;
     }
-    this.fallbackType = new Type(databaseService);
+    this.fallbackType = new Type(this);
   }
 
   async getFileType(f: RFile): Promise<Type> {

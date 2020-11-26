@@ -1,15 +1,14 @@
 import { RFile } from "src/common/rfile.entity";
 import { promises as fs } from 'fs';
-import { DatabaseService } from "src/database/database.service";
 import { basename, extname } from "path";
 
 export class Type {
   readonly type: string;
   readonly exts: string[];
-  private databaseService: DatabaseService;
+  private readonly ctx;
 
-  constructor(databaseService: DatabaseService) {
-    this.databaseService = databaseService;
+  constructor(ctx) {
+    this.ctx = ctx;
   }
   
   async isValid(f: RFile){
