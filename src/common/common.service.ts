@@ -10,7 +10,7 @@ import { SearchDto } from './dto/search.dto';
 
 @Injectable()
 export class CommonService {
-  constructor(private readonly databaseService: DatabaseService, private readonly extensionService: ExtensionService) { }
+  constructor(readonly databaseService: DatabaseService, private readonly extensionService: ExtensionService) { }
   async read(f: RFile) {
     return this.extensionService.getType(f.type).read(f);
   }
