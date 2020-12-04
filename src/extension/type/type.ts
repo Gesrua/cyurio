@@ -5,10 +5,10 @@ import { basename, extname } from "path";
 export class Type {
   readonly type: string;
   readonly exts: string[];
-  private readonly ctx;
+  private readonly extensionService;
 
-  constructor(ctx) {
-    this.ctx = ctx;
+  constructor(extensionService) {
+    this.extensionService = extensionService;
   }
   
   async isValid(f: RFile){
