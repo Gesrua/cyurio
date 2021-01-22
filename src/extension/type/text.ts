@@ -11,13 +11,13 @@ export class Text extends Type {
   readonly exts = ['.txt'];
 
   async read(f: RFile) {
-    await this.unify(f);
+    await this.standardize(f);
     const buffer = await fs.readFile(f.path);
     const encoding = detect(buffer).encoding;
     return decode(buffer, encoding);
   }
 
-  async unify(f: RFile) {
+  async standardize(f: RFile) {
     const content = await this.read(f);
     await fs.writeFile(f.path, encode(content, 'UTF-8'));
   }

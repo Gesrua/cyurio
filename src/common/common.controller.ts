@@ -24,9 +24,9 @@ export class CommonController {
     return this.rangeHandler(args, this.commonService.remove.bind(this.commonService));
   }
 
-  @Put('unify')
-  unify(@Body() args: RangeDTO) {
-    return this.rangeHandler(args, this.commonService.unify.bind(this.commonService));
+  @Put('standardize')
+  standardize(@Body() args: RangeDTO) {
+    return this.rangeHandler(args, this.commonService.standardize.bind(this.commonService));
   }
 
   @Get('query')

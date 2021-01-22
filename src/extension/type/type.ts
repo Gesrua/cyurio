@@ -19,7 +19,7 @@ export class Type {
     return fs.readFile(f.path);
   }
 
-  async unify(f: RFile) {
+  async standardize(f: RFile) {
     return;
   }
 

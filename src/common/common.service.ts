@@ -14,8 +14,8 @@ export class CommonService {
   async read(f: RFile) {
     return this.extensionService.getType(f.type).read(f);
   }
-  async unify(f: RFile) {
-    return this.extensionService.getType(f.type).unify(f);
+  async standardize(f: RFile) {
+    return this.extensionService.getType(f.type).standardize(f);
   }
   async remove(f: RFile) {
     // TODO: props remove
@@ -70,6 +70,7 @@ export class CommonService {
     await dir.close();
     return childs;
   }
+
   async shrinkField(field) {
     const files = <RFile[]>(await this.databaseService.find(field));
     const removeIDs: string[] = [];
