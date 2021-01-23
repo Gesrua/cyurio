@@ -14,11 +14,12 @@ export class FileService {
     f.prop = f.prop || {}
     const type  = await this.extensionService.getFileType(f);
     f.type = type.type;
+    const rf = f as RFile;
 
-    await type.create(f);
+    await type.create(rf);
     // TODO: props create
   
-    return this.databaseService.insert(f);
+    return this.databaseService.insert(rf);
   }
   async read(f: RFile) {
     return this.extensionService.getType(f.type).read(f);

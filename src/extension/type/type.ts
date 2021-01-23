@@ -1,7 +1,6 @@
 import { RFile } from "src/file/rfile.entity";
 import { promises as fs } from 'fs';
 import { basename, extname } from "path";
-import { IFile } from "src/file/ifile.interface";
 
 export class Type {
   readonly type: string;
@@ -24,7 +23,7 @@ export class Type {
     return;
   }
 
-  async create(f: IFile) {
+  async create(f: RFile) {
     f.title = f.title || basename(f.path);
   }
 
