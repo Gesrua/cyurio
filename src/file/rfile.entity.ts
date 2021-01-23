@@ -1,16 +1,16 @@
-export interface RFileDto {
+export interface RFile {
   /** id for Nedb */
-  _id?: string;
+  _id: string;
   /** file path */
   path: string;
   /** file title */
-  title?: string;
+  title: string;
 
   /** extension type */
-  type?: string;
+  type: string;
   /** extension type metadata */
-  metadata?: any;
+  metadata: any;
 
   /** extension property */
-  prop?: any;
+  prop: any;
 };

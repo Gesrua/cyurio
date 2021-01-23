@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { RFile } from 'src/file/rfile.entity';
 import { DatabaseService } from 'src/database/database.service';
 import { Text } from './type/text';
 import { Type } from './type/type';
+import { IFile } from 'src/file/ifile.interface';
 
 @Injectable()
 export class ExtensionService {
@@ -19,7 +19,7 @@ export class ExtensionService {
     this.fallbackType = new Type(this);
   }
 
-  async getFileType(f: RFile): Promise<Type> {
+  async getFileType(f: IFile): Promise<Type> {
     for(const type of this.types) {
       if (await type.isValid(f)) {
         return type;

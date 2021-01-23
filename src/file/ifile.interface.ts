@@ -1,16 +1,16 @@
-export interface RFile {
+export interface IFile {
   /** id for Nedb */
   _id?: string;
   /** file path */
-  path: string;
+  path?: string;
   /** file title */
-  title: string;
+  title?: string;
 
   /** extension type */
-  type: string;
+  type?: string;
   /** extension type metadata */
-  metadata: any;
+  metadata?: any;
 
   /** extension property */
-  prop: any;
+  prop?: any;
 };

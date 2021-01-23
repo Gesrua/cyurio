@@ -1,37 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
-import { ExtensionService } from 'src/extension/extension.service';
 import { ScanDirectoryDto } from './dto/scan-directory.dto';
-import { RFile } from './rfile.entity';
+import { RFile } from '../file/rfile.entity';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import Fuse from 'fuse.js';
 import { SearchDto } from './dto/search.dto';
+import { FileService } from 'src/file/file.service';
 
 @Injectable()
 export class CommonService {
-  constructor(readonly databaseService: DatabaseService, private readonly extensionService: ExtensionService) { }
-  async read(f: RFile) {
-    return this.extensionService.getType(f.type).read(f);
-  }
-  async standardize(f: RFile) {
-    return this.extensionService.getType(f.type).standardize(f);
-  }
-  async remove(f: RFile) {
-    // TODO: props remove
-    await this.extensionService.getType(f.type).remove(f);
-    await this.databaseService.remove(f);
-  }
-  async isDuplicate(f1: RFile, f2: RFile) {
-    if (f1._id == f2._id) return false;
-    if (f1.type != f2.type) return false;
-    return this.extensionService.getType(f1.type).isDuplicate(f1, f2);
-  }
-  async merge(f1: RFile, f2: RFile) {
-    await this.extensionService.getType(f1.type).merge(f1, f2);
-    await this.remove(f2);
-    return f1;
-  }
+  constructor(readonly databaseService: DatabaseService, private readonly fileService: FileService) { }
 
   async search(query: SearchDto) {
     const list = await this.databaseService.find(query.field);
@@ -44,16 +23,6 @@ export class CommonService {
     return fuse.search(query.value);
   }
 
-  async addFile(p: string) {
-    const f: RFile = { path: p, title: '', type: '', metadata: {}, prop: {} };
-    const type = await this.extensionService.getFileType(f);
-    await type.create(f);
-
-    // TODO: props create
-
-    return this.databaseService.insert(f);
-  }
-
   async scanDirectory(arg: ScanDirectoryDto) {
     const dir = await fs.opendir(arg.directory);
     const childs = [];
@@ -64,7 +33,7 @@ export class CommonService {
           await this.scanDirectory({ directory: path, recursive: arg.recursive });
         }
       } else if (r.isFile()) {
-        await this.addFile(path);
+        await this.fileService.create({'path': path});
       }
     }
     await dir.close();
@@ -89,35 +58,14 @@ export class CommonService {
       for(const dup of dups) {
         const b = <RFile>dup.item;
 
-        if (await this.isDuplicate(file, b)) {
+        if (await this.fileService.duplicate(file, b)) {
           // console.log("dup", file.title, b.title);
           removeIDs.push(b._id);
-          await this.merge(file, b);
-          await this.remove(b);
+          await this.fileService.merge(file, b);
+          await this.fileService.remove(b);
         }
       }
     }
     return removeIDs;
-  }
-
-
-  async runField(field, func) {
-    const items = await this.databaseService.find(field);
-    const response = [];
-    for (const item of items) {      
-      response.push(await func(item));
-    }
-    return response;
-  }
-  async runID(id: string, func) {
-    const item = await this.databaseService.get(id);
-    return func(item);
-  }
-  async runIDs(ids: string[], func) {
-    const response = [];
-    for(const id of ids) {
-      response.push(await this.runID(id, func));
-    }
-    return response;
   }
 }
