@@ -1,4 +1,4 @@
-import { RFile } from "src/common/rfile.entity";
+import { RFile } from "src/file/rfile.entity";
 import { promises as fs } from 'fs';
 import { basename } from "path";
 import { detect } from 'jschardet';

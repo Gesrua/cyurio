@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RFile } from 'src/common/rfile.entity';
+import { RFile } from 'src/file/rfile.entity';
 import { DatabaseService } from 'src/database/database.service';
 import { Text } from './type/text';
 import { Type } from './type/type';
