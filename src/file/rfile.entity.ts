@@ -12,5 +12,5 @@ export interface RFile {
   metadata: any;
 
   /** extension property */
-  prop: any;
+  props: string[];
 };

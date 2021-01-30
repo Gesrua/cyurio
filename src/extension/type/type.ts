@@ -1,6 +1,7 @@
 import { RFile } from "src/file/rfile.entity";
 import { promises as fs } from 'fs';
 import { basename, extname } from "path";
+import { IFile } from "src/file/ifile.interface";
 
 export class Type {
   readonly type: string;
@@ -11,7 +12,7 @@ export class Type {
     this.extensionService = extensionService;
   }
   
-  async isValid(f: RFile){
+  async isValid(f: IFile){
     return this.exts.includes(extname(f.path));
   }
 

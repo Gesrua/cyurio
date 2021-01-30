@@ -12,5 +12,5 @@ export interface IFile {
   metadata?: any;
 
   /** extension property */
-  prop?: any;
+  props?: string[];
 };

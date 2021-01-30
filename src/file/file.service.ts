@@ -11,17 +11,21 @@ export class FileService {
     f.title = f.title || ''
     f.path = f.path || ''
     f.metadata = f.metadata || {}
-    f.prop = f.prop || {}
+    f.props = f.props || []
     const type  = await this.extensionService.getFileType(f);
     f.type = type.type;
     const rf = f as RFile;
 
     await type.create(rf);
-    // TODO: props create
+
+    const props = await this.extensionService.getFileProps(rf);
+    rf.props = rf.props.concat(props.map(prop => prop.name));
+    await this.extensionService.runProps('create', rf);
   
     return this.databaseService.insert(rf);
   }
   async read(f: RFile) {
+    await this.extensionService.runProps('read', f);
     return this.extensionService.getType(f.type).read(f);
   }
   async update(f: IFile) {
@@ -29,14 +33,16 @@ export class FileService {
     return this.databaseService.db.update({'_id': f._id}, f);
   }
   async standardize(f: RFile) {
+    await this.extensionService.runProps('standardize', f);
     return this.extensionService.getType(f.type).standardize(f);
   }
   async remove(f: RFile) {
-    // TODO: props remove
+    await this.extensionService.runProps('remove', f);
     await this.extensionService.getType(f.type).remove(f);
     await this.databaseService.remove(f);
   }
   async merge(f1: RFile, f2: RFile) {
+    await this.extensionService.runProps('merge', f1, f2);
     await this.extensionService.getType(f1.type).merge(f1, f2);
     await this.remove(f2);
     return f1;
